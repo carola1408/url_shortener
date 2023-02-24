@@ -2,7 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars') // 載入 handlebars
-const url = require('./models/url') // 載入 url model
+const Url = require('./models/url') // 載入 url model
 const bodyParser = require('body-parser') // 引用 body-parser
 const validUrl = require('valid-url') // 引用 valid-url
 
@@ -42,7 +42,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // 設定首頁路由
 app.get('/', (req, res) => {
-  res.render('index')
+  Url.find() // 取出 Url model 裡的所有資料
+    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
+    .then(urls => res.render('index', { urls })) // 將資料傳給 index 樣板
+    .catch(error => console.error(error)) // 錯誤處理
 })
 
 
