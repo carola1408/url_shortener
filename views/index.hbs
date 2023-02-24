@@ -1,10 +1,18 @@
-
+{{#if randomURL}}
+<div class="container mt-5 d-flex flex-column text-center">
+  <p>Success! Please use this link:</p>
+  <a href="/{{randomURL}}" id="shorturl">http://localhost:3000/{{randomURL}}</a>
+</div>
+<div class="text-center">
+  <button onclick="copyurl()" class="btn btn-primary mb-3">Copy</button>
+</div>
+{{else}}
 <div class="form-container my-5">
   <form action="/" method="POST">
     <input type="url" name="url" class="form-control" placeholder="Input URL here!">
     <div class="btn-container d-flex justify-content-center my-3">
-      <button class="btn btn-outline-secondary btn-shorten " type="submit">Shorten</button>
+      <button class="btn btn-primary  " type="submit">Shorten</button>
     </div>
   </form>
 </div>
-</div>
+{{/if}}
