@@ -4,7 +4,7 @@ const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars') // 載入 handlebars
 const Url = require('./models/url') // 載入 url model
 const bodyParser = require('body-parser') // 引用 body-parser
-const validUrl = require('valid-url') // 引用 valid-url
+const urlShortener = require('../url_shortener')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -48,7 +48,43 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error)) // 錯誤處理
 })
 
+app.post('/', (req, res) => {
+  const url = req.body.url;
+  let randomUrl = urlShortener(5)
+  function checkedUrl(randomUrl) {
+    Url.findOne({ urlShortener: randomUrl })
+      .then((data) => {
+        if (data) {
+          randomUrl = urlShortener(5)
+          checkedUrl(randomUrl)
+        }
+      })
+      .catch(error => console.error(error))
+    return randomUrl
+  }
+  Url.findOne({ url })
+    .then((data) => {
+      if (!data) {
+        return Url.create({ url, urlShortener: randomUrl })
+      }
+      return data
+    })
+    .then((data) => res.render('index', { random: data.urlShortener }))
+    .catch(error => console.error(error))
+})
 
+app.get('/:urlShortener', (req, res) => {
+  const urlShortener = req.params.urlShortener
+  Url.findOne({ urlShortener })
+    .then((data) => {
+      if (!data) {
+        return res.render('error')
+      } else {
+        res.redirect(data.url)
+      }
+    })
+    .catch(error => console.error(error))
+})
 
 // 設定 port 3000
 app.listen(3000, () => {
