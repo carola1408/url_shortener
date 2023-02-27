@@ -42,18 +42,18 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // 設定首頁路由
 app.get('/', (req, res) => {
-  Url.find() // 取出 Url model 裡的所有資料
+  Urls.find() // 取出 Url model 裡的所有資料
     .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
     .then(urls => res.render('index', { urls })) // 將資料傳給 index 樣板
     .catch(error => console.error(error)) // 錯誤處理
 })
 
-app.post('/', (req, res) => {
+app.post('/shorten', (req, res) => {
   const originalLinks = req.body.name
   Urls.findOne({ url: originalLinks })
     .lean()
-    .then(urlData => {
-      if (!urlData) {
+    .then(urlsData => {
+      if (!urlsData) {
         const randomUrl = urlShortener(5)
         const host = req.get('/')
         const shortLinks = host + "/" + randomUrl
@@ -66,20 +66,23 @@ app.post('/', (req, res) => {
             res.render('newShorten', shortLinks)
           })
       }
-      res.render('shorten', urlData)
+      res.render('shorten', urlsData)
     })
     .catch(error => console.error(error))
 })
 
 app.get('/:shortLinks', (req, res) => {
   const shortLinks = req.params
-  Urls.findOne({ shorterUrl: randomUrl })
-    .then((data) => {
-      if (!data) {
-        return res.render('error')
-      } else {
-        res.redirect(data.url)
+  Urls.findOne({ short_urls: shortLinks })
+    .then(urlData => {
+      if (!urlData) {
+        return res.render('error', {
+          errorMsg: '無法顯示網頁',
+          errorLink: req.headers.host + '/' + shortLinks,
+
+        })
       }
+      res.redirect(urlsData.url)
     })
     .catch(error => console.error(error))
 })

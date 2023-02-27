@@ -1,5 +1,6 @@
 const mongoose = require('mongoose') // 載入 mongoose
-const url = require('../url')  // 載入 url model
+
+const Url = require('../url')  // 載入 url model
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
@@ -27,7 +28,7 @@ db.once('open', () => {
   const randomUrl = urlShortener(5)
   const host = "http://localhost:3000"
   const shortLinks = host + "/" + randomUrl
-  url.create({
+  Url.create({
     url: originalLinks,
     shorterUrl: randomUrl,
     short_urls: shortLinks
