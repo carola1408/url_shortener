@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
-const urlShorteren = require('../../urlShorteren')
+const urlShortener = require('../../urlShortener')
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }) // 設定連線到 mongoDB
 
@@ -24,7 +24,7 @@ db.once('open', () => {
 db.once('open', () => {
   console.log('mongodb connected')
   const originalLinks = "http://www.goole.com"
-  const randomString = urlShorteren(5)
+  const randomString = urlShortener(5)
   const host = "http://localhost:3000"
   const shortLinks = host + "/" + randomString
   url.create({
