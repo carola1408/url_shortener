@@ -7,7 +7,7 @@ const urlSchema = new Schema({
   },
   shorterUrl: {
     type: String,
-    require: true
+    required: true
   }
 })
 module.exports = mongoose.model('Url', urlSchema)

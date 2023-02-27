@@ -2,7 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars') // 載入 handlebars
-const Url = require('./models/url') // 載入 url model
+const Urls = require('./models/url') // 載入 url model
 const bodyParser = require('body-parser') // 引用 body-parser
 const urlShortener = require('../url_shortener')
 
@@ -49,33 +49,31 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-  const url = req.body.url;
-  let randomUrl = urlShortener(5)
-  function checkedUrl(randomUrl) {
-    Url.findOne({ urlShortener: randomUrl })
-      .then((data) => {
-        if (data) {
-          randomUrl = urlShortener(5)
-          checkedUrl(randomUrl)
-        }
-      })
-      .catch(error => console.error(error))
-    return randomUrl
-  }
-  Url.findOne({ url })
-    .then((data) => {
-      if (!data) {
-        return Url.create({ url, urlShortener: randomUrl })
+  const originalLinks = req.body.name
+  Urls.findOne({ url: originalLinks })
+    .lean()
+    .then(urlData => {
+      if (!urlData) {
+        const randomUrl = urlShortener(5)
+        const host = req.get('/')
+        const shortLinks = host + "/" + randomUrl
+        return Urls.create({
+          url: originalLinks,
+          shorterUrl: randomUrl,
+          short_urls: shortLinks
+        })
+          .then(() => {
+            res.render('newShorten', shortLinks)
+          })
       }
-      return data
+      res.render('shorten', urlData)
     })
-    .then((data) => res.render('index', { random: data.urlShortener }))
     .catch(error => console.error(error))
 })
 
-app.get('/:urlShortener', (req, res) => {
-  const urlShortener = req.params.urlShortener
-  Url.findOne({ urlShortener })
+app.get('/:shortLinks', (req, res) => {
+  const shortLinks = req.params
+  Urls.findOne({ shorterUrl: randomUrl })
     .then((data) => {
       if (!data) {
         return res.render('error')
