@@ -7,4 +7,3 @@ module.exports = (num) => {
   }
   return result
 }
-module.exports = 

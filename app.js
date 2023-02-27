@@ -4,7 +4,7 @@ const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars') // 載入 handlebars
 const Url = require('./models/url') // 載入 url model
 const bodyParser = require('body-parser') // 引用 body-parser
-const urlShortener = require('../url_shortener')
+const urlShortener = require('./urlShortener')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -57,7 +57,7 @@ app.post('/shorten', (req, res) => {
         const randomUrl = urlShortener(5)
         const host = req.get('/')
         const shortLinks = host + "/" + randomUrl
-        return Urls.create({
+        return Url.create({
           url: originalLinks,
           shorterUrl: randomUrl,
           short_urls: shortLinks
