@@ -24,12 +24,12 @@ db.once('open', () => {
 db.once('open', () => {
   console.log('mongodb connected')
   const originalLinks = "http://www.goole.com"
-  const randomString = urlShortener(5)
+  const randomUrl = urlShortener(5)
   const host = "http://localhost:3000"
-  const shortLinks = host + "/" + randomString
+  const shortLinks = host + "/" + randomUrl
   url.create({
-    original_links: originalLinks,
-    short_links_random_string: randomString,
+    url: originalLinks,
+    shorterUrl: randomUrl,
     short_urls: shortLinks
   })
   console.log('done')
