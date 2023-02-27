@@ -63,10 +63,10 @@ app.post('/shorten', (req, res) => {
           short_urls: shortLinks
         })
           .then(() => {
-            res.render('newShorten', shortLinks)
+            res.render('newShorten', { shortLinks })
           })
       }
-      res.render('shorten', urlsData)
+      res.render('shorten', { urlData })
     })
     .catch(error => console.error(error))
 })
