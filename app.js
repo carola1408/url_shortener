@@ -61,7 +61,7 @@ app.post('/shorten', (req, res) => {
       if (!urlData) {
         const randomUrl = urlShortener(5)
         const host = req.get('origin')
-        const shortLinks = host + "/" + randomUrl
+        const shortLinks = host + '/' + randomUrl
         return Url.create({
           url: originalLinks,
           shorterUrl: randomUrl,
