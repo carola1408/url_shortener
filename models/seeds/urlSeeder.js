@@ -30,8 +30,8 @@ db.once('open', () => {
   const shortLinks = host + "/" + randomUrl
   Url.create({
     url: originalLinks,
-    shorterUrl: randomUrl,
-    short_urls: shortLinks
+    shortRandomUrl: randomUrl,
+    shorterUrl: shortLinks
   })
   console.log('done')
 })
