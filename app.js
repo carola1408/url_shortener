@@ -5,6 +5,7 @@ const exphbs = require('express-handlebars') // 載入 handlebars
 const Url = require('./models/url') // 載入 url model
 const bodyParser = require('body-parser') // 引用 body-parser
 const urlShortener = require('./urlShortener')
+const vaildUrl = require('valid-url')
 
 // 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== 'production') {
@@ -48,8 +49,12 @@ app.get('/', (req, res) => {
     .catch(error => console.error(error)) // 錯誤處理
 })
 
+//產生短網址
 app.post('/shorten', (req, res) => {
   const originalLinks = req.body.name
+  if (!originalLinks || !vaildUrl.isWebUri(originalLinks)) {
+    return res.redirect('/show-alarm')
+  }
   Url.findOne({ url: originalLinks })
     .lean()
     .then(urlData => {
@@ -71,6 +76,7 @@ app.post('/shorten', (req, res) => {
     .catch(error => console.error(error))
 })
 
+//提醒防止沒有輸入內容就送出表單
 app.get('/:shortLinks', (req, res) => {
   const shortLinks = req.params
   Url.findOne({ short_urls: shortLinks })
