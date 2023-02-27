@@ -64,7 +64,7 @@ app.post('/shorten', (req, res) => {
         const shortLinks = host + '/' + randomUrl
         return Url.create({
           url: originalLinks,
-          shortRandomUrl: randomUrl,
+          randomUrl: randomUrl,
           shorterUrl: shortLinks
         })
           .then(() => {
@@ -79,7 +79,7 @@ app.post('/shorten', (req, res) => {
 //提醒防止沒有輸入內容就送出表單
 app.get('/:shortLinks', (req, res) => {
   const shortLinks = req.params
-  Url.findOne({ shorterUrl: shortLinks })
+  Url.findOne({ short_urls: shortLinks })
     .then(urlData => {
       if (!urlData) {
         return res.render('error', {
