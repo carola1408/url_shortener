@@ -2,7 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose') // 載入 mongoose
 const exphbs = require('express-handlebars') // 載入 handlebars
-const Urls = require('./models/url') // 載入 url model
+const Url = require('./models/url') // 載入 url model
 const bodyParser = require('body-parser') // 引用 body-parser
 const urlShortener = require('../url_shortener')
 
@@ -42,18 +42,18 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // 設定首頁路由
 app.get('/', (req, res) => {
-  Urls.find() // 取出 Url model 裡的所有資料
+  Url.find() // 取出 Url model 裡的所有資料
     .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
-    .then(urls => res.render('index', { urls })) // 將資料傳給 index 樣板
+    .then(url => res.render('index', { url })) // 將資料傳給 index 樣板
     .catch(error => console.error(error)) // 錯誤處理
 })
 
 app.post('/shorten', (req, res) => {
   const originalLinks = req.body.name
-  Urls.findOne({ url: originalLinks })
+  Url.findOne({ url: originalLinks })
     .lean()
-    .then(urlsData => {
-      if (!urlsData) {
+    .then(urlData => {
+      if (!urlData) {
         const randomUrl = urlShortener(5)
         const host = req.get('/')
         const shortLinks = host + "/" + randomUrl
@@ -73,7 +73,7 @@ app.post('/shorten', (req, res) => {
 
 app.get('/:shortLinks', (req, res) => {
   const shortLinks = req.params
-  Urls.findOne({ short_urls: shortLinks })
+  Url.findOne({ short_urls: shortLinks })
     .then(urlData => {
       if (!urlData) {
         return res.render('error', {
@@ -82,7 +82,7 @@ app.get('/:shortLinks', (req, res) => {
 
         })
       }
-      res.redirect(urlsData.url)
+      res.redirect(urlData.url)
     })
     .catch(error => console.error(error))
 })
