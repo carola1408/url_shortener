@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 //提醒防止沒有輸入內容就送出表單
 app.get('/show-alarm', (req, res) => {
   res.send(`<script>
-    alert("Please enter the correct URL.");
+    alarm("Please enter the correct URL.");
     history.back();
   </script>`)
 })
@@ -89,7 +89,6 @@ app.get('/:shortLinks', (req, res) => {
         return res.render('error', {
           errorMsg: '無法顯示網頁',
           errorLink: req.headers.host + '/' + shortLinks,
-
         })
       }
       res.redirect(urlData.url)
