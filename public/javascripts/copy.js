@@ -1,7 +1,7 @@
 function copyUrl() {
-  const url = document.querySelector('#shorturl');
+  const shorterUrl = document.querySelector('#shortLinks');
   navigator.clipboard
-    .writeText(url.textContent)
+    .writeText(shorterUrl.textContent)
     .then(() => alert('copy'))
     .catch(error => console.error(error))
 }

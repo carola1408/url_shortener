@@ -11,7 +11,9 @@
       <a href="{{ urlData.shorterUrl }}" id='target_txt'>{{ urlData.shorterUrl }}</a>
     </h2>
     <div class="btn-container d-flex justify-content-center my-3">
-      <button class="btn btn-primary" type="btn" id="copyBtn" onClick="copyTxt()">Copy</button>
+      <button class="btn btn-primary" type="btn" id="copyBtn" onClick="copyTxt()"
+        data-clipboard-target="#shorterUrl">Copy</button>
     </div>
+    <script>new Clipboard("#Copy")</script>
   </div>
 </div>
