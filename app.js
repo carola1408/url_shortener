@@ -16,7 +16,6 @@ const app = express()
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true }) // 設定連線到 mongoDB
 
-
 // 取得資料庫連線狀態
 const db = mongoose.connection
 // 連線異常
@@ -35,11 +34,8 @@ app.set('view engine', 'hbs')
 // setting static files設定靜態檔案路由
 app.use(express.static('public'))
 
-
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
-
-
 
 // 設定首頁路由
 app.get('/', (req, res) => {
@@ -47,6 +43,14 @@ app.get('/', (req, res) => {
     .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
     .then(url => res.render('index', { url })) // 將資料傳給 index 樣板
     .catch(error => console.error(error)) // 錯誤處理
+})
+
+//提醒防止沒有輸入內容就送出表單
+app.get('/show-alarm', (req, res) => {
+  res.send(`<script>
+    alert("Please enter the correct URL.");
+    history.back();
+  </script>`)
 })
 
 //產生短網址
@@ -76,7 +80,7 @@ app.post('/shorten', (req, res) => {
     .catch(error => console.error(error))
 })
 
-//提醒防止沒有輸入內容就送出表單
+//使用短網址連向原始網站
 app.get('/:shortLinks', (req, res) => {
   const shortLinks = req.params
   Url.findOne({ short_urls: shortLinks })
