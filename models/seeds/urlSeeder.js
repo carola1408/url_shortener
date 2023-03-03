@@ -27,11 +27,11 @@ db.once('open', () => {
   const originalUrl = "https://tw.yahoo.com/"
   const randomUrl = urlShortener(5)
   const host = "http://localhost:3000"
-  const shortLinks = host + "/" + randomUrl
+  const shorterUrl = host + "/" + randomUrl
   Urls.create({
     originalUrl: originalUrl,
     randomUrl: randomUrl,
-    shorterUrl: shortLinks
+    shorterUrl: shorterUrl
   })
   console.log('done')
 })
