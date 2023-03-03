@@ -8,12 +8,10 @@
   <div class="form-container my-5">
     <h2 class="subtitle text-center">
       Success! Please use this link:
-      <a href="{{ urlData.shorterUrl }}" id='target_txt'>{{ urlData.shorterUrl }}</a>
+      <a href="{{ urlsData.short_urls }}" id='target_txt'>{{ urlsData.short_urls }}</a>
     </h2>
     <div class="btn-container d-flex justify-content-center my-3">
-      <button class="btn btn-primary" type="btn" id="copyBtn" onClick="copyTxt()"
-        data-clipboard-target="#shorterUrl">Copy</button>
+      <button class="btn btn-outline-secondary btn-shorten" type="btn" id="copyBtn" onClick="copyUrl()">Copy</button>
     </div>
-    <script>new Clipboard("#Copy")</script>
   </div>
 </div>
