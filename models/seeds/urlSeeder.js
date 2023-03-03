@@ -24,14 +24,14 @@ db.once('open', () => {
 //新增資料
 db.once('open', () => {
   console.log('mongodb connected')
-  const originalUrl = "https://tw.yahoo.com/"
+  const originalLinks = "https://tw.yahoo.com/"
   const randomUrl = urlShortener(5)
   const host = "http://localhost:3000"
-  const shorterUrl = host + "/" + randomUrl
+  const shortLinks = host + "/" + randomUrl
   Urls.create({
-    originalUrl: originalUrl,
+    originalUrl: originalLinks,
     randomUrl: randomUrl,
-    shorterUrl: shorterUrl
+    shorterUrl: shortLinks
   })
   console.log('done')
 })
