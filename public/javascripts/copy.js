@@ -6,9 +6,9 @@
 //     .catch(error => console.error(error))
 // }
 function copyUrl() {
-  const url = document.querySelector("#copyBtn");
+  const Urls = document.querySelector("#copyBtn");
   navigator.clipboard
-    .writeText(url.textContent)
+    .writeText(Urls.textContent)
     .then(() => alert("copy!"))
     .catch((error) => console.log(error));
 }
